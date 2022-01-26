@@ -1,34 +1,21 @@
 package com.bridgelabz.EmployeePayroleJDBC;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmployeePayroleDBService {
-	private PreparedStatement employeePayroleDataStatement;
-	private static EmployeePayroleDBService employeePayroleDBService;
+import com.mysql.cj.xdevapi.Statement;
 
-	private EmployeePayroleDBService() {
-		
-	}
-	
-	public static EmployeePayroleDBService getInstance() {
-		if(employeePayroleDBService == null)
-			employeePayroleDBService = new EmployeePayroleDBService();
-		return employeePayroleDBService;
-	}
+public class EmployeePayroleDBService {
 	
 	private Connection getConnection() throws SQLException {
 		
 		String jdbcURL = "jdbc:mysql://localhost:3306/employee_payrole?useSSL=false";
 		String userName = "root";
-		String password = "NANdini@23";
+		String password = "Nandini@23";
 		Connection connection;
 		
 		System.out.println("Connecting to the database : "+jdbcURL);
@@ -37,22 +24,28 @@ public class EmployeePayroleDBService {
 		
 		return connection;
 	}
-	private List<EmployeePayroleData> getEmployeePayroleData(ResultSet resultSet) {
+	
+	public List<EmployeePayroleData> readData(){
 		
+		String sqlStatement = "SELECT emp_id, emp_name, basic_pay, start FROM employee JOIN payrole ON employee.payrolel_id = payrole.payrole_id;";
 		List<EmployeePayroleData> employeePayroleList = new ArrayList<>();
-		
-		try {
+				
+		try (Connection connection = getConnection();){
+			java.sql.Statement statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery(sqlStatement);
+			
 			while(resultSet.next()) {
-				int id = resultSet.getInt("id");
-				String name = resultSet.getString("name");
-				double basicSalary = resultSet.getDouble("salary");
+				int id = resultSet.getInt("emp_id");
+				String name = resultSet.getString("emp_name");
+				double basicSalary = resultSet.getDouble("basic_pay");
 				LocalDate startDate = resultSet.getDate("start").toLocalDate();
 				employeePayroleList.add(new EmployeePayroleData(id, name, basicSalary, startDate));
 			}
 		}
-		catch(SQLException e) {
+		catch(SQLException e){
+			
 			e.printStackTrace();
 		}
 		return employeePayroleList;
-		
 	}
+}
