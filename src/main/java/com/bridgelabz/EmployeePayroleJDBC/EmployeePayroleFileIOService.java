@@ -9,7 +9,7 @@ import java.util.List;
 
 public class EmployeePayroleFileIOService {
 
-	public static String PAYROLL_FILE_NAME = "payroll-file.txt";
+	public static String PAYROLE_FILE_NAME = "payrole-file.txt";
 
 	public void writeData(List<EmployeePayroleData> employeePayroleList) {
 		
@@ -19,7 +19,7 @@ public class EmployeePayroleFileIOService {
 			empBuffer.append(employeeDataString);
 		});
 		try {
-			Files.write(Paths.get(PAYROLL_FILE_NAME), empBuffer.toString().getBytes());
+			Files.write(Paths.get(PAYROLE_FILE_NAME), empBuffer.toString().getBytes());
 		} 
 		catch (IOException e) {
 			e.printStackTrace();
@@ -27,7 +27,7 @@ public class EmployeePayroleFileIOService {
 	}
 	public void printData() {
 		try {
-			Files.lines(new File(PAYROLL_FILE_NAME).toPath()).forEach(System.out::println);
+			Files.lines(new File(PAYROLE_FILE_NAME).toPath()).forEach(System.out::println);
 		}
 		catch(IOException e) {e.printStackTrace();}
 	}
@@ -35,7 +35,7 @@ public class EmployeePayroleFileIOService {
 		
 		long entries=0;
 		try {
-			entries = Files.lines(new File(PAYROLL_FILE_NAME).toPath()).count();
+			entries = Files.lines(new File(PAYROLE_FILE_NAME).toPath()).count();
 		}
 		catch(IOException e) {e.printStackTrace();};
 		return entries;
@@ -43,7 +43,7 @@ public class EmployeePayroleFileIOService {
 	public List<String> readDataFromFile() {
 		List<String> employeePayrollList = new ArrayList<String>();
 		try {
-			Files.lines(new File(PAYROLL_FILE_NAME).toPath())
+			Files.lines(new File(PAYROLE_FILE_NAME).toPath())
 				.map(employee -> employee.trim())
 				.forEach(employee -> {
 					System.out.println(employee);
@@ -53,6 +53,6 @@ public class EmployeePayroleFileIOService {
 		catch(IOException e){
 			e.printStackTrace();
 		}
-		return employeePayrollList;
+		return employeePayroleList;
 	}
 }
