@@ -48,7 +48,7 @@ public class EmployeePayroleService {
 	}
 	public List<EmployeePayroleData> readEmployeePayroleData(IOService ioService) {
 		if(ioService.equals(IOService.DB_IO))
-			this.employeePayroleList = new EmployeePayroleDBService().readData();
+			this.employeePayroleList = new employeePayroleDBService().readData();
 		return this.employeePayroleList;
 	}
 	public static void main(String[] args) {
